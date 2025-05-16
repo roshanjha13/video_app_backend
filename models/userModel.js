@@ -2,16 +2,29 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
     {
-        channel:String,
+        channelName:{
+            type :String
+        },    
         email:{
             type:String,
             unique:true,
         },
-        phone:String,
-        password:String,
-        logoUrl:String,
-        logoId:String,
-        subscribers:Number,
+        phone:{
+            type :String
+        },    
+        password:{
+            type :String
+        },    
+        logoUrl:{
+            type :String
+        },    
+        logoId:{
+            type :String
+        },    
+        subscribers:{
+            type:Number,
+            default:0
+        },    
         subsribedChannel:[
             {
                 type:mongoose.Schema.Types.ObjectId,
