@@ -4,6 +4,7 @@ import fileUpload from "express-fileupload";
 
 import { connectDB } from "./config/dbconfig.js";
 import userRoutes from './routes/userRoutes.js'
+import videoRoutes from './routes/videoRoutes.js'
 
 dotenv.config()
 
@@ -20,6 +21,7 @@ app.use(fileUpload({
 }))
 
 app.use('/v1/user',userRoutes)
+app.use('/v1/video',videoRoutes)
 
 const PORT = process.env.PORT
 
