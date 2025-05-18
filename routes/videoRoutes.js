@@ -1,6 +1,5 @@
 import express from 'express';
 
-import User from '../models/userModel.js';
 import Video from '../models/videoModel.js';
 
 import cloudinary from '../config/cloudinary.js';
@@ -120,5 +119,33 @@ router.put('/update/:id',checkAuth,async(req,res)=>{
   }  
 })
 
+router.delete('/delete/:id',checkAuth,async(req,res)=>{
+    try {
+        const videoId = req.params.id;
+
+        let video = await Video.findById(`video/${videoId}`);
+        if (!video) {
+            return res.status(404).json({
+                error:"Video not found"
+            })
+        }
+
+        if (video.user_id.toString() !== req.user_id.toString()) {
+            return res.status(403).json({
+                message:'Unauthorized user'
+            })
+        };
+
+        await cloudinary.uploader.destroy(video.videoId, { resource_type: "video" });
+        await cloudinary.uploader.destroy(video.thumbnailId);
+
+        await Video.findByIdAndDelete(videoId)
+
+        res.status(200).json({ message: "Video deleted successfully" });
+
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong" });s
+    }
+})
 
 export default router;
